@@ -18,6 +18,7 @@ namespace :heroku do
     puts "Deployment Complete"
   end
 
+  desc "Run migration on Heroku"
   task :update_db do
     puts 'Starting database update'
     `heroku rake db:migrate`
@@ -28,8 +29,27 @@ namespace :heroku do
     puts 'done...'
   end
 
-  task :rename_app, :newname do |t, args|
-    puts "Rename heroku application to #{args[:newname]}"
+  desc "Rename application and git remote. Run like rake heroku:rename_app[<old_name>,<new_name>]"
+  task :rename_app, :old_name, :new_name do |t, args| 
+    puts "Rename heroku application to '#{args.new_name}'"
+    `heroku rename #{args.new_name} --app #{args.old_name}`
+    `git remote rm heroku`
+    `git remote add heroku git@heroku.com:#{args.new_name}.git`
+    puts "Heroku application was change name to '#{args.new_name}'"
+  end
+
+  desc "Import local db to heroku. Run like rake rake heroku:import[<app_name>]"
+  task :import, :app_name do |t, args|
+    puts 'Databese import running...'
+    `heroku db:pull --confirm #{args.app_name}`
+    puts 'Database import finish success.'
+  end
+
+  desc "Export local db to heroku. Run like rake heroku:export[<app_name>]"
+  task :export, :app_name do |t, args|
+    puts 'Database export running...'
+    `heroku db:push --confirm #{args.app_name}`
+    puts 'Database export finish success.'
   end
 
 end
