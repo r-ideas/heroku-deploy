@@ -1,13 +1,34 @@
 DeployToHerokuTask
 ==================
 
-Introduction goes here.
+This plugin add tasks their help you deploy your rails application to Heroku.
+
+== Installation
+  RAILS 2
+  script/plugin install git@github.com:r-ideas/heroku-deploy.git
+
+  RAILS 3
+  rails plugin install git@github.com:r-ideas/heroku-deploy.git
+
+== Example
+
+#Rename app on Heroku
+
+rake heroku:rename_app[<old_name>,<new_name>]
+
+#Import Heroku database to local server
+
+rake heroku:import[<app_name>]
+
+#Export local server dabatase to Heroku
+
+rake heroku:export[<app_name>]
+
+#Deploy application to Heroku
+
+rake heroku:deploy
 
 
-Example
-=======
-
-Example goes here.
 
 
-Copyright (c) 2011 [name of plugin creator], released under the MIT license
+Copyright (c) 2011 R-IDEAS, released under the MIT license
